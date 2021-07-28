@@ -10,9 +10,9 @@ const useHttp = (requestConfig, applyData) => {
       try {
         const response = await fetch(
           requestConfig.url, {
-              method: requestConfig.method,
-              headers: requestConfig.headers,
-              body: JSON.stringify(requestConfig.body)
+              method: requestConfig.method ? requestConfig.method : 'GET',
+              headers: requestConfig.headers ? requestConfig.headers : {},
+              body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
           }
         );
   
@@ -29,7 +29,6 @@ const useHttp = (requestConfig, applyData) => {
           loadedTasks.push({ id: taskKey, text: data[taskKey].text });
         }
   
-        setTasks(loadedTasks);
       } catch (err) {
         setError(err.message || 'Something went wrong!');
       }
