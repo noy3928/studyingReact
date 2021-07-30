@@ -11,6 +11,10 @@ const SimpleInput = (props) => {
   const formSubmissionHandler = event => {
     event.preventDefault(); // 브라우저 상에서 기본적으로 일어나는 행위를 막는다. 그 행위로써는 섭밋이 될 때, http request가 보내지는 것이 될 수 있겠다. 
   
+    if(enteredName.trim() === ''){
+      return;
+    }
+
     console.log(enteredName)
     const enteredValue = nameInputRef.current.value;
     console.log(enteredValue)
