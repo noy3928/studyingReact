@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 const SimpleInput = (props) => {
   const nameInputRef = useRef();
   const [enteredName, setEnteredName] = useState('');
+  const [enteredNameIsValid, setEnteredNameIsValid] = useState(true)
 
   const nameInputChangeHandler = event => {
     setEnteredName(event.target.value);
@@ -12,8 +13,11 @@ const SimpleInput = (props) => {
     event.preventDefault(); // 브라우저 상에서 기본적으로 일어나는 행위를 막는다. 그 행위로써는 섭밋이 될 때, http request가 보내지는 것이 될 수 있겠다. 
   
     if(enteredName.trim() === ''){
+      setEnteredNameIsValid(false);
       return;
     }
+
+    setEnteredNameIsValid(true);
 
     console.log(enteredName)
     const enteredValue = nameInputRef.current.value;
@@ -23,10 +27,12 @@ const SimpleInput = (props) => {
     setEnteredName('')//이렇게 하면 제출이 된 후 폼의 내용물이 지워질 수 있다. 
   }
 
+  const nameInputClasses = enteredNameIsValid ? 'form-control' : 'form-control invalid'
+
 
   return (
     <form onSubmit={formSubmissionHandler}>
-      <div className='form-control'>
+      <div className='nameInputClasses'>
         <label htmlFor='name'>Your Name</label>
         <input 
           ref={nameInputRef} 
@@ -35,6 +41,7 @@ const SimpleInput = (props) => {
           onChange={nameInputChangeHandler} 
           value={enteredName}
           />
+          {!enteredNameIsValid && <p className="error-text">Name must not be empty.</p>}
       </div>
       <div className="form-actions">
         <button>Submit</button>
