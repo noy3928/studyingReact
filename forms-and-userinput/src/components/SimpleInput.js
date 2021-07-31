@@ -1,61 +1,78 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+
+import useInput from "../hooks/use-input"
 
 const SimpleInput = (props) => {
-  // const nameInputRef = useRef();
-  const [enteredName, setEnteredName] = useState('');  
-  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+  const { 
+    value: enteredName, 
+    isValid: enteredNameIsValid,
+    hasError: nameInputHasError, 
+    valueChangeHandler: nameChangeHandler, 
+    inputBlurHandler:nameBlurHandler,
+    reset: resetNameInput
+  } = useInput(value => value.trim() !== '');
 
-  const enteredNameIsValid = enteredName.trim() !== '';
-  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched
+  const {
+    value: enteredEmail, 
+    isValid: enteredEmailIsValid, 
+    hasError: emailInputHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler:emailBlurHandler,
+    reset: resetEmailInput
+  } = useInput(value => value.includes('@'));
+
 
   let formIsValid = false;
 
-    if(enteredNameIsValid){
+    if(enteredNameIsValid && enteredEmailIsValid){
       formIsValid = true;
     }
 
-  const nameInputChangeHandler = event => {
-    setEnteredName(event.target.value);
-  };
-
-  const nameInputBlurHandler = event => {
-    setEnteredNameTouched(true)
-  }
 
   const formSubmissionHandler = event => {
     event.preventDefault(); // 브라우저 상에서 기본적으로 일어나는 행위를 막는다. 그 행위로써는 섭밋이 될 때, http request가 보내지는 것이 될 수 있겠다. 
   
-    setEnteredNameTouched(true);
+
 
     if(!enteredNameIsValid){
       return;
     }
 
-
     console.log(enteredName)
-
-    setEnteredName('')//이렇게 하면 제출이 된 후 폼의 내용물이 지워질 수 있다. 
-    setEnteredNameTouched(false);
+    resetNameInput()
+    resetEmailInput()
   }
   
-  
-
-  const nameInputClasses = nameInputIsInvalid ? 'form-control invalid' : 'form-control'
-
+  const nameInputClasses = nameInputHasError ? 'form-control invalid' : 'form-control';
+  const emailInputClasses = emailInputHasError ? 'form-control invalid' : 'form-control';
 
   return (
     <form onSubmit={formSubmissionHandler}>
+
       <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
         <input 
           type='text' 
           id='name' 
-          onChange={nameInputChangeHandler} 
-          onBlur={nameInputBlurHandler}
+          onChange={nameChangeHandler} 
+          onBlur={nameBlurHandler}
           value={enteredName}
           />
-          {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
+          {nameInputHasError && <p className="error-text">Name must not be empty.</p>}
       </div>
+
+      <div className={emailInputClasses}>
+        <label htmlFor='name'>Your E-Mail</label>
+        <input 
+          type='email' 
+          id='name' 
+          onChange={emailChangeHandler} 
+          onBlur={emailBlurHandler}
+          value={enteredEmail}
+          />
+          {emailInputHasError && <p className="error-text">Please enter a valid email.</p>}
+      </div>
+
       <div className="form-actions">
         <button disabled={!formIsValid}>Submit</button>
       </div>

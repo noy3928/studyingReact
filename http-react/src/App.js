@@ -54,6 +54,7 @@ function App() {
     console.log(data);
   }
 
+  
   let content = <p>Found no movies.</p>;
 
   if (movies.length > 0) {
