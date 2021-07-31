@@ -16,6 +16,15 @@ const SimpleInput = (props) => {
     setEnteredName(event.target.value);
   };
 
+  const nameInputBlurHandler = event => {
+    setEnteredNameTouched(true)
+
+    if(enteredName.trim() === ''){
+      setEnteredNameIsValid(false);
+      return;
+    }
+  }
+
   const formSubmissionHandler = event => {
     event.preventDefault(); // 브라우저 상에서 기본적으로 일어나는 행위를 막는다. 그 행위로써는 섭밋이 될 때, http request가 보내지는 것이 될 수 있겠다. 
   
@@ -50,6 +59,7 @@ const SimpleInput = (props) => {
           type='text' 
           id='name' 
           onChange={nameInputChangeHandler} 
+          onBlur={nameInputBlurHandler}
           value={enteredName}
           />
           {nameInputIsInvalid && <p className="error-text">Name must not be empty.</p>}
