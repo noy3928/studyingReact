@@ -3,6 +3,7 @@ import {Route} from 'react-router-dom';
 import Welcome from "./pages/Welcome";
 import Product from './pages/Product';
 import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
         </Route>
         <Route path="/product">
           <Product />
+        </Route>
+        <Route path="/product-detail/:productId">
+          <ProductDetail/>
         </Route>
       </main>
     </div>
