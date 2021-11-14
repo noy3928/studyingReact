@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 
 //no dotenv
 
-const socket = io.connect("http://localhost:5000")
+const socket = io.connect("http://13.209.10.67")
 const userName = nanoid(4)
 
 function App() {
