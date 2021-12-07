@@ -15,3 +15,5 @@ function* getPostsWatcher() {
 export default function* postsSaga() {
     yield all([getPostsWatcher()])
 }
+
+//test
